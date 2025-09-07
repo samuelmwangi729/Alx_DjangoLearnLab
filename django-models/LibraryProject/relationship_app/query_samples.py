@@ -13,7 +13,7 @@ from relationship_app.models import Author,Book,Librarian,Library
 #query al books 
 def books_by_author(author):
     author = Author.objects.get(name=author)
-    return author.books.all()
+    return Book.objects.filter(author=author)
 
 #list all books in a library 
 
@@ -24,4 +24,4 @@ def books_in_lib(library_name):
 #retrieve the librarian for the library 
 def get_librarian(library_name):
     lib = Library.objects.get(name=library_name)
-    return lib.librarian
+    return Librarian.objects.filter(library=lib)
