@@ -39,7 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf.apps.BookshelfConfig',
     'relationship_app.apps.RelationshipAppConfig'
+],
+
+TEMPLATES = [
+    {
+        'DIRS': [],
+        'APP_DIRS': True,
+    },
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
