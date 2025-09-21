@@ -30,16 +30,6 @@ INSTALLED_APPS = [
     "user.apps.UserConfig"
 ]
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # You can add template directories here
-        'APP_DIRS': True,
-    },
-]
-
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -55,7 +45,7 @@ ROOT_URLCONF = 'LibraryProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/"templates"], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
