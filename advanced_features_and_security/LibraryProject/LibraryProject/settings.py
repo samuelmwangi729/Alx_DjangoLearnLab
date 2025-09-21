@@ -59,6 +59,35 @@ MIDDLEWARE = [
 CSP_DEFAULT_SRC = ("'self'",)  # Allow content only from your own domain
 ROOT_URLCONF = 'LibraryProject.urls'
 
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+# Tell browsers to only access your site via HTTPS for one year (in seconds)
+SECURE_HSTS_SECONDS = 31536000
+
+# Apply HSTS policy to all subdomains
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Allow your domain to be included in browser preload lists for HSTS
+SECURE_HSTS_PRELOAD = True
+
+# Ensure session cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+
+# Ensure CSRF cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True
+
+# Prevent your site from being framed to protect against clickjacking attacks
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent browsers from MIME-sniffing a response away from the declared content-type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable the browser's XSS filtering and help prevent cross-site scripting attacks
+SECURE_BROWSER_XSS_FILTER = True
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
