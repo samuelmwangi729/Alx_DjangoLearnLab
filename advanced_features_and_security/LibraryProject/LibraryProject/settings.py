@@ -10,11 +10,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0z7)0b@#dbsw)pas-9h7xwpsop+v06=4o$0buaag!j1t^76r4p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 # Add or modify this line
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
 ALLOWED_HOSTS = []
 
+# settings.py
+
+# Prevents browsers from interpreting files as something else (MIME sniffing)
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enables the browser's built-in cross-site scripting filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevents the site from being framed (clickjacking protection)
+X_FRAME_OPTIONS = 'DENY'  # or 'SAMEORIGIN' depending on your needs
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 3600  # Adjust seconds as needed
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True
 
 # Application definition
 
@@ -38,8 +54,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware'
 ]
-
+CSP_DEFAULT_SRC = ("'self'",)  # Allow content only from your own domain
 ROOT_URLCONF = 'LibraryProject.urls'
 
 TEMPLATES = [
