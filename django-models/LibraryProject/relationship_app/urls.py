@@ -18,4 +18,5 @@ urlpatterns = [
     path('login_alt/', LoginView.as_view(template_name='login.html'), name='login_alt'),  # Optional: Django's built-in LoginView
     path('register/', views.CreateUser.as_view(), name='register'),  # Class-based registration view
     path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path("register/", views.register, name="register"),
 ]

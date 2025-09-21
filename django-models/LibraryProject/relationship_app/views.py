@@ -68,3 +68,13 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, "login.html", {"form": form})
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Log the user in after registration
+            return redirect('list_books')  # or any page you prefer
+    else:
+        form = UserCreationForm()
+    return render(request, "register.html", {"form": form})
