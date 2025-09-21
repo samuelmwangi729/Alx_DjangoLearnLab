@@ -1,3 +1,5 @@
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 
 class Book(models.Model):
@@ -7,12 +9,6 @@ class Book(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.author} ({self.publication_year})"
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.base_user import BaseUserManager
-from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.conf import settings
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -49,3 +45,10 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+    class Meta:
+        permissions = [
+            ('can_view', 'Can view books'),
+            ('can_create', 'Can create books'),
+            ('can_edit', 'Can edit books'),
+            ('can_delete', 'Can delete books'),
+        ]
