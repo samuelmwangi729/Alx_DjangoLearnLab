@@ -7,7 +7,7 @@ from .forms import ExampleForm
 @permission_required('bookshelf.can_edit', raise_exception=True)
 def book_list(request):
     books = Book.objects.select_related("author").all()
-    return render(request,"book.html",{"books":books})
+    return render(request,"bookshelf/book_list.html",{"books":books})
 def create(request):
     if request.method == 'POST':
         form = ExampleForm(request.POST)
