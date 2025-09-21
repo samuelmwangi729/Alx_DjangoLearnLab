@@ -77,4 +77,4 @@ def register(request):
             return redirect('list_books')  # or any page you prefer
     else:
         form = UserCreationForm()
-    return render(request, "register.html", {"form": form})
+    return render(request, "relationship_app/register.html", {"form": form})
