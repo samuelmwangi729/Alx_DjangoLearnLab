@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from api.filters import BookFilter
 # api/views.py
 from rest_framework import filters, generics
 from rest_framework.permissions import IsAuthenticated
@@ -28,9 +29,9 @@ class BookListView(generics.ListAPIView):
 
     # Filtering by fields
     filterset_fields = ['title', 'author', 'publication_year']
-
+    filterset_class = BookFilter
     # Search on these fields
-    search_fields = ['title', 'author__name']
+    search_fields = ['title', 'author']
 
     # Allow ordering by these fields
     ordering_fields = ['title', 'publication_year']
