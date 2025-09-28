@@ -1,12 +1,12 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from api.filters import BookFilter
 # api/views.py
-from rest_framework import filters, generics
+from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 from .models import Book
 from .serializers import BookSerializer
 from .permissions import IsAuthenticatedOrReadOnly
-from django_filters import rest_framework
+from rest_framework import generics
 # GET /books/ - List all books
 class BookListView(generics.ListAPIView):
     """
