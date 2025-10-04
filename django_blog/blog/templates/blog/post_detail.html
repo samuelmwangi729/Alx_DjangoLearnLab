@@ -4,6 +4,15 @@
     <p><strong>{{ comment.author }}</strong> said:</p>
     <p>{{ comment.content }}</p>
     <small>{{ comment.created_at|date:"M d, Y H:i" }}</small>
+    <!-- post_detail.html -->
+<p><strong>Tags:</strong>
+  {% for tag in object.tags.all %}
+    <a href="{% url 'posts-by-tag' tag.name %}">#{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+  {% empty %}
+    No tags
+  {% endfor %}
+</p>
+
     {% if user == comment.author %}
       <p>
         <a href="{% url 'comment-update' comment.pk %}">Edit</a> |

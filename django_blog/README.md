@@ -39,3 +39,21 @@
 1. Log in to your account
 2. Open a blog post
 3. Scroll to the bottom and submit the comment form
+
+## 🏷 Tagging & 🔍 Search Features
+
+### 💡 Tagging Posts
+- While creating or editing a post, add tags using commas (e.g., `django, blog, tutorial`).
+- Tags appear on the post detail page.
+- Clicking a tag shows all posts with that tag.
+
+### 🔍 Searching Posts
+- Use the search bar at the top to search for posts.
+- Matches are found in:
+  - Post titles
+  - Post content
+  - Tags
+
+### 🔗 URL Patterns
+- `/search/?q=keyword` — Search results
+- `/tags/<tag>/` — Posts filtered by tag
