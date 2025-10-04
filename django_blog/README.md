@@ -18,3 +18,24 @@
 - Only authors can modify their own posts.
 - Posts can be read by anyone.
 
+## 💬 Comment System
+
+### Features:
+- Add comments to blog posts
+- Edit or delete your own comments
+- All users can view comments on posts
+
+### URL Patterns:
+- `/posts/<post_id>/comments/new/` - Create a comment
+- `/comments/<comment_id>/edit/` - Edit a comment
+- `/comments/<comment_id>/delete/` - Delete a comment
+
+### Permissions:
+- Only logged-in users can comment
+- Only comment authors can edit or delete their comments
+- All users (authenticated or not) can view comments
+
+### How to Comment:
+1. Log in to your account
+2. Open a blog post
+3. Scroll to the bottom and submit the comment form
