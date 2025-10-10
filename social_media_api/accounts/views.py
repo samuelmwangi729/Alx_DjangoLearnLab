@@ -1,13 +1,16 @@
+from accounts.models import CustomUser
 # accounts/views.py
 
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserRegistrationSerializer, UserLoginSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 from  django.contrib.auth import get_user_model
+from .models import CustomUser
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
@@ -31,7 +34,7 @@ class LoginView(APIView):
 
 class ProfileView(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         user = request.user
@@ -45,12 +48,12 @@ class ProfileView(APIView):
         }
         return Response(data)
 
-class FollowUserView(APIView):
-    permission_classes = [IsAuthenticated]
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         try:
-            target_user = get_user_model().objects.get(id=user_id)
+            target_user = CustomUser.objects.get(id=user_id)
             if target_user == request.user:
                 return Response({"detail": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
             request.user.following.add(target_user)
@@ -60,11 +63,11 @@ class FollowUserView(APIView):
 
 
 class UnfollowUserView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         try:
-            target_user = User.objects.get(id=user_id)
+            target_user = CustomUser.objects.get(id=user_id)
             request.user.following.remove(target_user)
             return Response({"detail": f"You have unfollowed {target_user.username}."})
         except User.DoesNotExist:
