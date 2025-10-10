@@ -76,3 +76,22 @@ class UnfollowUserView(APIView):
             return Response({"detail": f"You have unfollowed {target_user.username}."})
         except CustomUser.DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    if not created:
+        return Response({'detail': 'You have already liked this post.'}, status=400)
+
+    # Notify post author
+    if post.author != request.user:
+        create_notification(
+            recipient=post.author,
+            actor=request.user,
+            verb='liked',
+            target=post
+        )
+
+    return Response({'detail': 'Post liked.'})
