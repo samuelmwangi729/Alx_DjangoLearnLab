@@ -9,8 +9,6 @@ from .serializers import UserRegistrationSerializer, UserLoginSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import permissions
-from  django.contrib.auth import get_user_model
-from .models import CustomUser
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
@@ -35,7 +33,7 @@ class LoginView(APIView):
 class ProfileView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-
+    users = CustomUser.objects.all()
     def get(self, request):
         user = request.user
         data = {
@@ -58,9 +56,8 @@ class FollowUserView(generics.GenericAPIView):
                 return Response({"detail": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
             request.user.following.add(target_user)
             return Response({"detail": f"You are now following {target_user.username}."})
-        except User.DoesNotExist:
+        except CustomUser.DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
-
 
 class UnfollowUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -70,5 +67,5 @@ class UnfollowUserView(APIView):
             target_user = CustomUser.objects.get(id=user_id)
             request.user.following.remove(target_user)
             return Response({"detail": f"You have unfollowed {target_user.username}."})
-        except User.DoesNotExist:
+        except CustomUser.DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
