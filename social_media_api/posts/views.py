@@ -1,10 +1,12 @@
 from rest_framework import viewsets, permissions, filters
 from rest_framework.pagination import PageNumberPagination
-from posts.models import Post, Comment
+from posts.models import Comment, Like, Post
 from posts.serializers import PostSerializer, CommentSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from notifications.utils import create_notification
 # Custom Permissions
 class IsAuthorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -50,3 +52,35 @@ def user_feed(request):
     posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    try:
+        post = Post.objects.get(pk=pk)
+    except Post.DoesNotExist:
+        return Response({'detail': 'Post not found.'}, status=404)
+
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    if not created:
+        return Response({'detail': 'You have already liked this post.'}, status=400)
+
+    if post.author != request.user:
+        create_notification(
+            recipient=post.author,
+            actor=request.user,
+            verb='liked',
+            target=post
+        )
+
+    return Response({'detail': 'Post liked.'}, status=200)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, pk):
+    try:
+        like = Like.objects.get(user=request.user, post__pk=pk)
+        like.delete()
+        return Response({'detail': 'Post unliked.'}, status=200)
+    except Like.DoesNotExist:
+        return Response({'detail': 'Like not found.'}, status=404)

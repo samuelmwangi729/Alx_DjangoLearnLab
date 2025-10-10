@@ -55,6 +55,13 @@ class FollowUserView(generics.GenericAPIView):
             if target_user == request.user:
                 return Response({"detail": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
             request.user.following.add(target_user)
+            from notifications.utils import create_notification
+            create_notification(
+                recipient=target_user,
+                actor=request.user,
+                verb='followed',
+                target=request.user
+            )
             return Response({"detail": f"You are now following {target_user.username}."})
         except CustomUser.DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
